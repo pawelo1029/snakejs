@@ -1,0 +1,28 @@
+.KontenerGry{
+    text-align: center;
+}
+
+#PlanszaGry{
+    border: 3px solid black;
+    background-color: #c8e6c9;
+    background-image:
+        linear-gradient(#a5d6a7 1px, transparent 1px),
+        linear-gradient(90deg, #a5d6c9 1px, transparent 1px);
+    background-size: 25px 25px;
+}
+
+#wynik{
+    font-size: 64px;
+    font-family: "Press Start 2P", monospace;
+}
+
+#guzik{
+    font-family: "Press Start 2P", monospace;
+    font-size: 14px;
+    width: 140px;
+    height: 50px;
+    border: 3px solid #2e7d32;
+    border-radius: 12px;
+    cursor: pointer;
+    background-color: #54c282;
+}
