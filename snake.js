@@ -122,19 +122,21 @@ function rysujWeza(){
 function zmienKierunek(event){
     const kodPrzycisku = event.keyCode;
 
-    if((kodPrzycisku === 37 || kodPrzycisku === 65) && predkoscX !== rozmiar){
+    // ADWS - 65,68,87,83 dokoncz
+    
+    if((kodPrzycisku === 37) && predkoscX !== rozmiar){
         predkoscX = -rozmiar;
         predkoscY = 0;
     }
-    else if((kodPrzycisku === 39 || kodPrzycisku === 68) && predkoscX !== -rozmiar){
+    else if((kodPrzycisku === 39) && predkoscX !== -rozmiar){
         predkoscX = rozmiar;
         predkoscY = 0;
     }
-    else if((kodPrzycisku === 38 || kodPrzycisku === 87) && predkoscY !== rozmiar){
+    else if((kodPrzycisku === 38) && predkoscY !== rozmiar){
         predkoscX = 0;
         predkoscY = -rozmiar;
     }
-    else if((kodPrzycisku === 40 || kodPrzycisku === 83) && predkoscY !== -rozmiar){
+    else if((kodPrzycisku === 40) && predkoscY !== -rozmiar){
         predkoscX = 0;
         predkoscY = rozmiar;
     }
@@ -182,4 +184,5 @@ function resetGry(){
     rysujJedzenie();
     rysujWeza();
     nastepnyTick();
+
 }
