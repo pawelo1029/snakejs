@@ -26,3 +26,19 @@
     cursor: pointer;
     background-color: #54c282;
 }
+#tabela {
+    margin: 10px auto;
+    font-family: "Press Start 2P", monospace;
+    font-size: 14px;
+    border: 3px solid #2e7d32;
+    border-collapse: collapse;
+}
+
+#tabela th, #tabela td {
+    padding: 10px 20px;
+    border: 2px solid #2e7d32;
+}
+
+#tabela th {
+    background-color: #54c282;
+}

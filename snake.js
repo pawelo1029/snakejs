@@ -20,6 +20,11 @@ let jedzenieY;
 let wynik = 0;
 let running = true;
 
+let kolejkaKierunków = [];
+
+let najlepszyWynik = localStorage.getItem("najlepszyWynik") || 0;
+document.querySelector("#najlepszyWynik").textContent = najlepszyWynik;
+
 const poczatkowyWaz = [
     { x: rozmiar * 4, y: 0 },
     { x: rozmiar * 3, y: 0 },
@@ -41,6 +46,7 @@ function startGry() {
     running = true;
     predkoscX = rozmiar;
     predkoscY = 0;
+    kolejkaKierunków = [];
     waz = poczatkowyWaz.map(c => ({ x: c.x, y: c.y }));
     stworzJedzenie();
     wyczyscPlansze();
@@ -97,6 +103,12 @@ function rysujJedzenie() {
 }
 
 function ruchWeza() {
+    if(kolejkaKierunków.length > 0){
+        const nastepny = kolejkaKierunków.shift();
+        predkoscX = nastepny.x;
+        predkoscY = nastepny.y;
+    }
+
     const glowa = { x: waz[0].x + predkoscX, y: waz[0].y + predkoscY };
     waz.unshift(glowa);
 
@@ -122,23 +134,21 @@ function rysujWeza(){
 function zmienKierunek(event){
     const kodPrzycisku = event.keyCode;
 
-    // ADWS - 65,68,87,83 dokoncz
-    
-    if((kodPrzycisku === 37) && predkoscX !== rozmiar){
-        predkoscX = -rozmiar;
-        predkoscY = 0;
+    const ostatni = kolejkaKierunków.length > 0
+        ? kolejkaKierunków[kolejkaKierunków.length - 1]
+        : { x: predkoscX, y: predkoscY };
+
+    if(kodPrzycisku === 37 && ostatni.x !== rozmiar){
+        kolejkaKierunków.push({ x: -rozmiar, y: 0 });
     }
-    else if((kodPrzycisku === 39) && predkoscX !== -rozmiar){
-        predkoscX = rozmiar;
-        predkoscY = 0;
+    else if(kodPrzycisku === 39 && ostatni.x !== -rozmiar){
+        kolejkaKierunków.push({ x: rozmiar, y: 0 });
     }
-    else if((kodPrzycisku === 38) && predkoscY !== rozmiar){
-        predkoscX = 0;
-        predkoscY = -rozmiar;
+    else if(kodPrzycisku === 38 && ostatni.y !== rozmiar){
+        kolejkaKierunków.push({ x: 0, y: -rozmiar });
     }
-    else if((kodPrzycisku === 40) && predkoscY !== -rozmiar){
-        predkoscX = 0;
-        predkoscY = rozmiar;
+    else if(kodPrzycisku === 40 && ostatni.y !== -rozmiar){
+        kolejkaKierunków.push({ x: 0, y: rozmiar });
     }
 }
 
@@ -147,20 +157,30 @@ function sprawdzKoniecGry(){
 
     if(glowa.x < 0 || glowa.x >= szerokoscGry || glowa.y < 0 || glowa.y >= wysokoscGry){
         running = false;
+        zapiszNajlepszyWynik();
         return;
     }
 
     for(let i = 1; i < waz.length; i++){
         if(glowa.x === waz[i].x && glowa.y === waz[i].y){
             running = false;
+            zapiszNajlepszyWynik();
             return;
         }
     }
 }
 
+function zapiszNajlepszyWynik(){
+    if(wynik > najlepszyWynik){
+        najlepszyWynik = wynik;
+        localStorage.setItem("najlepszyWynik", najlepszyWynik);
+        document.querySelector("#najlepszyWynik").textContent = najlepszyWynik;
+    }
+}
+
 function wyswietlKoniecGry(){
     ctx.fillStyle = "rgba(0,0,0,0.5)";
-    ctx.fillRect(0,0,szerokoscGry, wysokoscGry);
+    ctx.fillRect(0, 0, szerokoscGry, wysokoscGry);
 
     ctx.fillStyle = "white";
     ctx.font = "30px 'Press Start 2P', monospace";
@@ -177,6 +197,7 @@ function resetGry(){
     wynikEl.textContent = wynik;
     predkoscX = rozmiar;
     predkoscY = 0;
+    kolejkaKierunków = [];
     waz = poczatkowyWaz.map(c => ({ x: c.x, y: c.y }));
     running = true;
     stworzJedzenie();
@@ -184,5 +205,4 @@ function resetGry(){
     rysujJedzenie();
     rysujWeza();
     nastepnyTick();
-
 }
